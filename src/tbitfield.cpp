@@ -113,14 +113,18 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-	delete[] pMem;
-	BitLen = bf.BitLen;
-	MemLen = bf.MemLen;
-	pMem = new TELEM[MemLen];
-	for (int i = 0; i < MemLen; i++)
+	this->BitLen = bf.BitLen;
+	if (this->MemLen != bf.MemLen)
 	{
-		pMem[i] = bf.pMem[i];
+		MemLen = bf.MemLen;
+		TELEM* tmp = new TELEM[bf.MemLen];
+		delete[]pMem;
+		pMem = tmp;
 	}
+	for (size_t i = 0; i < bf.MemLen; i++) {
+		this->pMem[i] = bf.pMem[i];
+	}
+
 	return *this;
 }
 
